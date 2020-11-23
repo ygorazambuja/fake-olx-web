@@ -104,4 +104,8 @@ public class PessoaService implements GenericCRUDService<Pessoa, PessoaDTO> {
         var responsavel = pessoaRepository.findById(id).orElse(null);
         return responsavel != null && validaIdade(responsavel.getDataNascimento());
     }
+
+    public Pessoa getPorNome(String nome) {
+        return pessoaRepository.findByNome(nome);
+    }
 }

@@ -1,8 +1,11 @@
 package com.ufms.olx.controllers;
 
+import com.ufms.olx.domain.dto.PessoaDTO.GetPessoaFiltroDto;
 import com.ufms.olx.domain.dto.PessoaDTO.PessoaDTO;
 import com.ufms.olx.domain.entities.Pessoa;
 import com.ufms.olx.services.PessoaService;
+import com.ufms.olx.services.lambda.GetPessoaPorFiltro;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/pessoa")
 public class PessoaController implements GenericController<Pessoa, PessoaDTO> {
     private final PessoaService pessoaService;
+    private final GetPessoaPorFiltro getPessoaPorFiltro;
 
-    public PessoaController(PessoaService pessoaService) {
+    public PessoaController(
+        PessoaService pessoaService,
+        GetPessoaPorFiltro getPessoaPorFiltro
+    ) {
         this.pessoaService = pessoaService;
+        this.getPessoaPorFiltro = getPessoaPorFiltro;
     }
 
     @Override
@@ -54,5 +62,27 @@ public class PessoaController implements GenericController<Pessoa, PessoaDTO> {
     @Override
     public ResponseEntity<?> getAllEntities() {
         return ResponseEntity.ok().body(pessoaService.getAll());
+    }
+
+    @GetMapping("/pessoaFiltroAuxiliar")
+    public ResponseEntity<?> getPessoaComFiltroAuxiliar(
+        @RequestBody GetPessoaFiltroDto getPessoaFiltroDto
+    ) {
+        List<Pessoa> pessoasCoerentes = getPessoaPorFiltro.executar(getPessoaFiltroDto);
+        return ResponseEntity.ok().body(pessoasCoerentes);
+    }
+
+    @GetMapping("/pessoaFiltro")
+    public ResponseEntity<?> getPessoaComFiltro(
+           @RequestParam(name = "idResponsavel", required = false) Long idResponsavel
+    ) {
+        GetPessoaFiltroDto getPessoaFiltroDto = GetPessoaFiltroDto.builder().idResponsavel(idResponsavel).build();
+        List<Pessoa> pessoasCoerentes = getPessoaPorFiltro.executar(getPessoaFiltroDto);
+        return ResponseEntity.ok().body(pessoasCoerentes);
+    }
+
+    @GetMapping("/getPorNome/{nome}")
+    public ResponseEntity<?> getPessoaPorNome(@PathVariable("nome") String nome) {
+        return ResponseEntity.ok().body(pessoaService.getPorNome(nome));
     }
 }
