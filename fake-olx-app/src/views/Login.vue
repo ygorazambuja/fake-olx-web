@@ -1,18 +1,38 @@
 <template>
   <div class="container">
-    <h1>Login</h1>
-    <input class="input" type="text" placeholder="Login" v-model="login" />
-    <input class="input" type="text" placeholder="Senha" v-model="senha" />
-    <button class="button" @click="onLogin">
-      {{ loading ? "Carregando" : "Clique para Login" }}
-    </button>
+    <b-jumbotron style="height: 100%">
+      <b-col>
+        <h1>Login</h1>
+      </b-col>
+      <b-col align-v="center">
+        <b-form @submit="onLogin">
+          <b-form-input
+            class="input"
+            type="text"
+            required
+            placeholder="Login"
+            v-model="login"
+          />
+          <b-form-input
+            class="input"
+            type="text"
+            required
+            placeholder="Senha"
+            v-model="senha"
+          />
+          <b-button type="submit" @submit="onLogin" block>
+            {{ loading ? "Carregando" : "Clique para Login" }}
+          </b-button>
+        </b-form>
+      </b-col>
+    </b-jumbotron>
   </div>
 </template>
 
 <script>
 import { api } from "../services/api";
 export default {
-  name: "App",
+  name: "Login",
   components: {},
   data: () => ({
     login: "",
@@ -20,7 +40,8 @@ export default {
     loading: false,
   }),
   methods: {
-    onLogin() {
+    onLogin(evt) {
+      evt.preventDefault();
       this.loading = true;
       api
         .post(
@@ -34,11 +55,15 @@ export default {
           }
         )
         .then(({ data }) => {
+          if (data.pessoa) {
+            localStorage.setItem("@fakeolx:login", data.login);
+            localStorage.setItem("@fakeolx:senha", data.senha);
+            this.$router.history.push("home");
+          }
           data.pessoa ? console.log("ok") : console.log("not ok");
-          localStorage.setItem("@fakeolx:login", data.login);
-          localStorage.setItem("@fakeolx:senha", data.senha);
           this.loading = false;
-        });
+        })
+        .catch((err) => console.log(err));
     },
   },
 };
@@ -48,16 +73,5 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
-  margin: auto;
-  max-width: 500px;
-  padding: 10px;
-}
-.input {
-  font-size: 20px;
-  padding: 10px;
-}
-.button {
-  font-size: 20px;
-  padding: 20px;
 }
 </style>
