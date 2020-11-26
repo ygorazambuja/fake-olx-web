@@ -156,7 +156,17 @@ public class InitialConfig {
             .quantidadeEstoque(1L)
             .build();
 
-        produtoRepository.saveAll(Arrays.asList(produto1, produto2));
+        Produto produto3 = Produto
+            .builder()
+            .descricao("Moto")
+            .idadePermitida(16)
+            .precoCompra(10000)
+            .precoVendaFisica(10000)
+            .precoVendaJuridica(8000)
+            .quantidadeEstoque(1L)
+            .build();
+
+        produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3));
     }
 
     private void PopulaPedidos() {

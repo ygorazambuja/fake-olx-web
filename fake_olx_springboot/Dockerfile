@@ -1,5 +1,12 @@
-FROM openjdk:11.0.9.1
+FROM maven:3.6.3-openjdk-11-slim AS MAVEN_BUILD
+COPY pom.xml /build/
+COPY src /build/src/
+WORKDIR /build/
 RUN mvn package
-COPY target/*SNAPSHOT.jar /usr/src/
-WORKDIR /usr/src/
-CMD ["java", "-jar","/usr/src/olx-0.0.1-SNAPSHOT.jar"]
+
+
+FROM openjdk:11-slim
+EXPOSE 8081
+COPY --from=MAVEN_BUILD build/target/olx-0.0.1.jar /app/
+
+ENTRYPOINT ["java", "-jar", "app/olx-0.0.1.jar"]

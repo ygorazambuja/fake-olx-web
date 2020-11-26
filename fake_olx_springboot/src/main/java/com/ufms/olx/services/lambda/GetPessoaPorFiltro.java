@@ -1,5 +1,7 @@
 package com.ufms.olx.services.lambda;
 
+import static java.util.Objects.nonNull;
+
 import com.ufms.olx.domain.dto.PessoaDTO.GetPessoaFiltroDto;
 import com.ufms.olx.domain.entities.Pessoa;
 import com.ufms.olx.repository.PessoaRepository;
@@ -16,51 +18,52 @@ public class GetPessoaPorFiltro {
     }
 
     public List<Pessoa> executar(GetPessoaFiltroDto getPessoaFiltroDto) {
+        Pessoa responsavel = pessoaRepository.findByNome(
+            getPessoaFiltroDto.getNomeDoResponsavel()
+        );
         return pessoaRepository
             .findAll()
             .stream()
             .filter(
                 pessoa -> {
-                    if (
-                        pessoa.getIdResponsavel() == null ||
-                        getPessoaFiltroDto.getIdResponsavel() == null
-                    ) {
-                        return false;
-                    } else {
+                    if (nonNull(getPessoaFiltroDto.getTipoPessoa())) {
+                        return pessoa
+                            .getTipoPessoa()
+                            .equals(getPessoaFiltroDto.getTipoPessoa());
+                    }
+                    return Boolean.TRUE;
+                }
+            )
+            .filter(
+                pessoa -> {
+                    if (nonNull(getPessoaFiltroDto.getIdResponsavel())) {
                         return pessoa
                             .getIdResponsavel()
                             .equals(getPessoaFiltroDto.getIdResponsavel());
                     }
+                    return Boolean.TRUE;
                 }
             )
-//            .filter(
-//                pessoa -> {
-//                    if (
-//                        pessoa.getSituacaoPessoa() == null ||
-//                        getPessoaFiltroDto.getSituacaoPessoa() == null
-//                    ) {
-//                        return false;
-//                    } else {
-//                        return pessoa
-//                            .getSituacaoPessoa()
-//                            .equals(getPessoaFiltroDto.getSituacaoPessoa());
-//                    }
-//                }
-//            )
-//            .filter(
-//                pessoa -> {
-//                    if (
-//                        pessoa.getTipoPessoa() == null ||
-//                        getPessoaFiltroDto.getSituacaoPessoa() == null
-//                    ) {
-//                        return false;
-//                    } else {
-//                        return pessoa
-//                            .getTipoPessoa()
-//                            .equals(getPessoaFiltroDto.getTipoPessoa());
-//                    }
-//                }
-//            )
+            .filter(
+                pessoa -> {
+                    if (nonNull(getPessoaFiltroDto.getSituacaoPessoa())) {
+                        return pessoa
+                            .getSituacaoPessoa()
+                            .equals(getPessoaFiltroDto.getSituacaoPessoa());
+                    }
+                    return Boolean.TRUE;
+                }
+            )
+            .filter(
+                pessoa -> {
+                    if (nonNull(responsavel)) {
+                        return nonNull(pessoa.getIdResponsavel())
+                            ? pessoa.getIdResponsavel().equals(responsavel.getId())
+                            : Boolean.FALSE;
+                    }
+                    return Boolean.TRUE;
+                }
+            )
             .collect(Collectors.toList());
     }
 }
