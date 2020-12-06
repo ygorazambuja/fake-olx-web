@@ -1,46 +1,47 @@
 <template>
-  <div class="container">
-    <b-jumbotron>
-      <b-col>
-        <h1>Home</h1>
-        <ul v-for="produto in produtos" :key="produto.id">
-          <li>
-            Nome : {{ produto.descricao }} / Preço : {{ produto.precoCompra }}
-          </li>
-        </ul>
+  <b-container>
+    <navbar></navbar>
+    <b-container>
+      <b-col inline>
+        <router-link to="newProduct">
+          <b-button variant="success" size="lg">
+            <b-icon icon="plus"></b-icon>
+          </b-button>
+        </router-link>
       </b-col>
-    </b-jumbotron>
-  </div>
+      <b-col>
+        <b-button-toolbar> <b-button> asdhiausd</b-button> </b-button-toolbar>
+      </b-col>
+    </b-container>
+
+    <b-row>
+      <product-list :produtos="produtos"> </product-list>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-import { api } from "../services/api";
+import NavbarVue from "../components/Navbar.vue";
+import ProductListVue from "../components/ProductList.vue";
+// import getAllProdutos from "../usecases/produtos/getAllProdutos";
+import { mapActions, mapGetters } from "vuex";
 export default {
+  components: {
+    navbar: NavbarVue,
+    "product-list": ProductListVue,
+  },
   name: "Home",
-  data: () => ({
-    produtos: [],
-  }),
+  data: () => ({}),
+  computed: {
+    ...mapGetters(["produtos"]),
+  },
   mounted() {
-    this.onLoad();
+    this.getProdutos();
   },
   methods: {
-    onLoad() {
-      api
-        .get("produto", {
-          headers: {
-            login: localStorage.getItem("@fakeolx:login"),
-            senha: localStorage.getItem("@fakeolx:senha"),
-          },
-        })
-        .then(({ data }) => (this.produtos = data));
-    },
+    ...mapActions(["getProdutos"]),
   },
 };
 </script>
 
-<style>
-.container {
-  display: flex;
-  flex-direction: column;
-}
-</style>
+<style scoped></style>

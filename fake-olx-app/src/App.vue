@@ -4,10 +4,4 @@
   </div>
 </template>
 
-<style>
-#app {
-  display: flex;
-  box-sizing: border-box;
-  height: 500px;
-}
-</style>
+<style></style>
