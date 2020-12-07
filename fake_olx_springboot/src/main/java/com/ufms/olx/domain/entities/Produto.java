@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,11 +21,11 @@ public class Produto {
     private String descricao;
     private Long quantidadeEstoque;
     private Integer idadePermitida;
-    private double precoCompra;
+    private BigDecimal precoCompra;
 
     @Transient
-    private double precoVendaFisica;
+    private BigDecimal precoVendaFisica;
 
     @Transient
-    private double precoVendaJuridica;
+    private BigDecimal precoVendaJuridica;
 }

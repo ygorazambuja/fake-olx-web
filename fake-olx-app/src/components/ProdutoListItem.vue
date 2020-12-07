@@ -12,7 +12,10 @@
           >
             Detalhes
           </b-button>
-          <b-button variant="warning">
+          <b-button
+            variant="warning"
+            :to="{ name: 'ProductEditPage', params: { id: produto.id } }"
+          >
             Editar
             <b-icon icon="pencil-square"></b-icon>
           </b-button>

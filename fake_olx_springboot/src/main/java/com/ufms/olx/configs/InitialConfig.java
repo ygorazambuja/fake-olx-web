@@ -140,9 +140,9 @@ public class InitialConfig {
             .builder()
             .descricao("Computador")
             .idadePermitida(0)
-            .precoCompra(2000)
-            .precoVendaFisica(2000)
-            .precoVendaJuridica(1900)
+            .precoCompra(BigDecimal.valueOf(2000))
+            .precoVendaFisica(BigDecimal.valueOf(2000))
+            .precoVendaJuridica(BigDecimal.valueOf(2000))
             .quantidadeEstoque(1000L)
             .build();
 
@@ -150,9 +150,9 @@ public class InitialConfig {
             .builder()
             .descricao("Casa")
             .idadePermitida(18)
-            .precoCompra(1000000)
-            .precoVendaFisica(1000000)
-            .precoVendaJuridica(999999)
+            .precoCompra(BigDecimal.valueOf(200000))
+            .precoVendaFisica(BigDecimal.valueOf(2000))
+            .precoVendaJuridica(BigDecimal.valueOf(999999))
             .quantidadeEstoque(1L)
             .build();
 
@@ -160,9 +160,9 @@ public class InitialConfig {
             .builder()
             .descricao("Moto")
             .idadePermitida(16)
-            .precoCompra(10000)
-            .precoVendaFisica(10000)
-            .precoVendaJuridica(8000)
+            .precoCompra(BigDecimal.valueOf(10000))
+            .precoVendaFisica(BigDecimal.valueOf(10000))
+            .precoVendaJuridica(BigDecimal.valueOf(8000))
             .quantidadeEstoque(1L)
             .build();
 

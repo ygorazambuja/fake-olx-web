@@ -48,16 +48,20 @@ public class PessoaController implements GenericController<Pessoa, PessoaDTO> {
         return ResponseEntity.ok().body("");
     }
 
+    @Override
+    public ResponseEntity<?> updateEntity(Pessoa pessoa, Long id) {
+        return null;
+    }
+
     @GetMapping
     public ResponseEntity<?> getPessoas() {
         var pessoas = pessoaService.getAll();
         return ResponseEntity.ok().body(pessoas);
     }
 
-    @Override
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEntity(Pessoa pessoa, Long id) {
-        Pessoa updatedPessoa = pessoaService.update(pessoa, id);
+    public ResponseEntity<?> update(@RequestBody() PessoaDTO pessoa, @PathVariable("id") Long id) {
+        Pessoa updatedPessoa = pessoaService.updatePessoa(pessoa, id);
         return ResponseEntity.ok().body(updatedPessoa);
     }
 

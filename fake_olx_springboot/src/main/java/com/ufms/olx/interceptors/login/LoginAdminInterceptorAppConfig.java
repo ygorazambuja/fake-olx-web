@@ -7,13 +7,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Component
 public class LoginAdminInterceptorAppConfig extends WebMvcConfigurerAdapter {
-    @Autowired
-    LoginAdminInterceptor interceptor;
+  @Autowired
+  LoginAdminInterceptor interceptor;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry
             .addInterceptor(interceptor)
-            .addPathPatterns("/api/pessoa", "/api/pessoa/*");
-    }
+            .addPathPatterns("/api")
+            .excludePathPatterns("/api/pessoa");
+  }
 }

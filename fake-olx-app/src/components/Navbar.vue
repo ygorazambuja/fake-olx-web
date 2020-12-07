@@ -9,14 +9,16 @@
       />
     </b-navbar-brand>
     <b-navbar-nav class="ml-auto">
-      <b-button variant="info" class="mb-2" to="/profile">
-        <b-icon icon="person" aria-hidden="true"></b-icon>
-        {{ pessoa.pessoa.apelido }}
-      </b-button>
-      <b-button variant="danger" class="mb-2" @click="doLogout()">
-        <b-icon icon="power" aria-hidden="true" />
-        Logout
-      </b-button>
+      <b-button-group vertical>
+        <b-button variant="info" class="mb-2" to="/profile">
+          <b-icon icon="person" aria-hidden="true"></b-icon>
+          {{ pessoa.pessoa.apelido }}
+        </b-button>
+        <b-button variant="danger" class="mb-2" @click="doLogout()">
+          <b-icon icon="power" aria-hidden="true" />
+          Logout
+        </b-button>
+      </b-button-group>
     </b-navbar-nav>
   </b-navbar>
 </template>
